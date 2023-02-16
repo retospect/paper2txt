@@ -9,27 +9,27 @@ import io
 
 
 
-def convert_pdf_to_txt(path):
+def convert_pdf_to_txt(in_file, separate_pages = False):
     rsrcmgr = PDFResourceManager()
     retstr = io.StringIO()
-    codec = 'utf-8'
     laparams = LAParams()
-    device = TextConverter(rsrcmgr, retstr, codec=codec, laparams=laparams)
+    device = TextConverter(rsrcmgr, retstr, laparams=laparams)
     interpreter = PDFPageInterpreter(rsrcmgr, device)
     password = ""
     maxpages = 0
     caching = True
     pagenos = set()
 
-    for page in PDFPage.get_pages(args.infile, pagenos, maxpages=maxpages,
+    with open(in_file, 'rb') as file:
+        for page in PDFPage.get_pages(file, pagenos, maxpages=maxpages,
                                   password=password,
                                   caching=caching,
                                   check_extractable=True):
-        interpreter.process_page(page)
-        if args.separate_pages:
-            pass
+            interpreter.process_page(page)
+            if separate_pages:
+                # Not implemented yet
+                pass
 
-    fp.close()
     device.close()
     text = retstr.getvalue()
     retstr.close()
@@ -49,6 +49,6 @@ def paper2txt_main():
     parser.add_argument('-p', '--separate-pages')
     args = parser.parse_args()
 
-    with open(args.outfile, 'w') as out:
-        out.write(convert_pdf_to_txt(args.infile))
+    with open(args.outfile[0], 'w') as out:
+        out.write(convert_pdf_to_txt(args.infile[0]))
     
