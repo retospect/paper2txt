@@ -8,8 +8,18 @@ from pdfminer.pdfpage import PDFPage
 import io
 
 
+def clean_text(text):
+    fixed = []
+    for line in text.split('\n'):
+        if len(line) < 10:
+            continue
+        if '©' in line:
+            continue
+        line = line.encode('ascii',errors='ignore').decode()
+        fixed.append(line)
+    return "\n".join(fixed)
 
-def convert_pdf_to_txt(in_file, separate_pages = False):
+def convert_pdf_to_txt(in_file, separate_pages = True):
     rsrcmgr = PDFResourceManager()
     retstr = io.StringIO()
     laparams = LAParams()
@@ -19,7 +29,7 @@ def convert_pdf_to_txt(in_file, separate_pages = False):
     maxpages = 0
     caching = True
     pagenos = set()
-
+    pages = []
     with open(in_file, 'rb') as file:
         for page in PDFPage.get_pages(file, pagenos, maxpages=maxpages,
                                   password=password,
@@ -27,20 +37,13 @@ def convert_pdf_to_txt(in_file, separate_pages = False):
                                   check_extractable=True):
             interpreter.process_page(page)
             if separate_pages:
-                # Not implemented yet
-                pass
+                text = retstr.getvalue()
+                text = clean_text(text)
+                pages.append(text)  
 
     device.close()
-    text = retstr.getvalue()
     retstr.close()
-    fixed = []
-    for line in text.split('\n'):
-        if len(line) < 10:
-            continue
-        if '©' in line:
-            continue
-        fixed.append(line)
-    return "\n".join(fixed)
+    return pages
 
 def paper2txt_main():
     parser = argparse.ArgumentParser(description="Converts scientific papers to txt")
@@ -49,6 +52,8 @@ def paper2txt_main():
     parser.add_argument('-p', '--separate-pages')
     args = parser.parse_args()
 
+    pages = convert_pdf_to_txt(args.infile[0])
+
     with open(args.outfile[0], 'w') as out:
-        out.write(convert_pdf_to_txt(args.infile[0]))
+        out.write("\n===PAGE====\n".join(pages))
     
