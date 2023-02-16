@@ -7,11 +7,6 @@ from pdfminer.layout import LAParams
 from pdfminer.pdfpage import PDFPage
 import io
 
-args = argparse()
-args.add_argument('infile', nargs='?', type=argparse.FileType('r'), help="Input file")
-args.add_argument('outfile', nargs='?', type=argparse.FileType('w'), help="Output file")
-args.add_argument('-p', '--separate-pages')
-
 
 
 def convert_pdf_to_txt(path):
@@ -47,4 +42,10 @@ def convert_pdf_to_txt(path):
         fixed.append(line)
     return "\n".join(fixed)
 
-args.out_file.write(convert_pdf_to_txt(args.infile))
+def paper2txt_main():
+    args = argparse("Converts scientific papers to txt")
+    args.add_argument('infile', nargs='?', type=argparse.FileType('r'), help="Input file")
+    args.add_argument('outfile', nargs='?', type=argparse.FileType('w'), help="Output file")
+    args.add_argument('-p', '--separate-pages')
+
+    args.out_file.write(convert_pdf_to_txt(args.infile))
