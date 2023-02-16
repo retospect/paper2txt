@@ -3,7 +3,7 @@
 ```
 git commit 
 git clean -fdx --dry-run
-poetry run fafa
+poetry run paper2txt
 tox
 bumpver update --patch
 poetry publish --build --username $PYPI_USERNAME --password $PYPI_PASSWORD
