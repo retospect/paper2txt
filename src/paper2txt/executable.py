@@ -48,4 +48,4 @@ def paper2txt_main():
     args.add_argument('outfile', nargs='?', type=argparse.FileType('w'), help="Output file")
     args.add_argument('-p', '--separate-pages')
 
-    args.out_file.write(convert_pdf_to_txt(args.infile))
+    args.outfile.write(convert_pdf_to_txt(args.infile))
