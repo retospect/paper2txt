@@ -1,5 +1,8 @@
-# Wibble - a template for simple python packages
+# paper2pdf
 
-A minimalist template for a python package.
+A minimalist tool to extract text from modern PDFs (no OCR). 
 
-Provides the bl and the blarg commands.
+```
+paper2txt myPDF.pdf outputfile.txt
+```
+
