@@ -43,7 +43,7 @@ def convert_pdf_to_txt(path):
     return "\n".join(fixed)
 
 def paper2txt_main():
-    args = argparse("Converts scientific papers to txt")
+    args = argparse.ArgumentParser(description="Converts scientific papers to txt")
     args.add_argument('infile', nargs='?', type=argparse.FileType('r'), help="Input file")
     args.add_argument('outfile', nargs='?', type=argparse.FileType('w'), help="Output file")
     args.add_argument('-p', '--separate-pages')
