@@ -3,7 +3,6 @@
 ```
 git commit 
 git clean -fdx --dry-run
-poetry run paper2txt
 tox
 bumpver update --patch
 poetry publish --build --username $PYPI_USERNAME --password $PYPI_PASSWORD
@@ -20,3 +19,5 @@ pip install paper2txt
 
 pip install --force-reinstall dist/*.whl
 ```
+
+poetry run paper2txt
