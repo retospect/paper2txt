@@ -7,7 +7,7 @@ name = "paper2txt"
 authors = ["Reto Stamm"]
 description = "Simple tool to extract text from scientific PDFs"
 readme = "README.md"
-version = "0.0.2"
+version = "0.0.3"
 keywords = ["pdf", "paper", "text extraction"]
 license = "GPL-3"
 classifiers = [ "Programming Language :: Python :: 3", ]
@@ -20,7 +20,7 @@ paper2txt = "paper2txt.executable:paper2txt_main"
 pdfminer = "*"
 
 [tool.bumpver]
-current_version = "0.0.2"
+current_version = "0.0.3"
 version_pattern = "MAJOR.MINOR.PATCH"
 commit_message = "bump version {old_version} -> {new_version}"
 commit = true
