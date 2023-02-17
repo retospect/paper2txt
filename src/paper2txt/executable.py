@@ -6,11 +6,13 @@ from pdfminer.converter import TextConverter
 from pdfminer.layout import LAParams
 from pdfminer.pdfpage import PDFPage
 import io
+import re
 
 
 def clean_text(text):
     fixed = []
     for line in text.split('\n'):
+        line = re.sub('\w+', ' ')
         if len(line) < 10:
             continue
         if '©' in line:
