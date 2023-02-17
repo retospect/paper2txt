@@ -12,7 +12,7 @@ import re
 def clean_text(text):
     fixed = []
     for line in text.split('\n'):
-        line = re.sub('\w+', ' ')
+        line = re.sub('\s+', ' ', line)
         if len(line) < 10:
             continue
         if '©' in line:
@@ -51,11 +51,18 @@ def paper2txt_main():
     parser = argparse.ArgumentParser(description="Converts scientific papers to txt")
     parser.add_argument('infile',  nargs=1, help="Input file")
     parser.add_argument('outfile', nargs=1, help="Output file")
-    parser.add_argument('-p', '--separate-pages')
+    parser.add_argument('-p', '--pages', action="store_true", help="Make one file per pdf page")
     args = parser.parse_args()
 
     pages = convert_pdf_to_txt(args.infile[0])
 
-    with open(args.outfile[0], 'w') as out:
-        out.write("\n===PAGE====\n".join(pages))
-    
+    if args.pages:
+        pgn = 1
+        for page in pages:
+            with open("{}_{}.txt".format(args.outfile[0], pgn), 'w') as out:
+                out.write(page)
+            pgn +=1
+    else:
+        with open(args.outfile[0], 'w') as out:
+            out.write("\n".join(pages))
+
